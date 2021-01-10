@@ -1,8 +1,6 @@
 #ifndef HW1_234218_AVL_H
 #define HW1_234218_AVL_H
 
-//#include "ManagedArray.h"
-
 const int EMPTY_TREE_SIZE = 0;
 const int LEAF_NODE_HEIGHT = 0;
 const int BALANCE_EQUAL_VALUE = 0;
@@ -10,10 +8,10 @@ const int MAXIMAL_POSITIVE_BALANCE = 1;
 const int MINIMAL_NEGATIVE_BALANCE = -1;
 const int HEIGHT_STEP_UNIT = 1;
 
-template<typename T>
+template<typename T, typename K>
 class AVL_Node {
-    T data; ///time watched
-    int key; ///class id
+    T data;
+    K key;
     int course_id;
     int height;
     int sum_of_subtree;
@@ -147,13 +145,13 @@ public:
     }
 };
 
-template<typename T>
+template<typename T, typename K>
 class AVL{
     int size;
-    AVL_Node<T>* root;
+    AVL_Node<T, K>* root;
 
-    void RotateLeft(AVL_Node<T>** node) {
-        AVL_Node<T>* temp = (*node)->getRight();
+    void RotateLeft(AVL_Node<T, K>** node) {
+        AVL_Node<T, K>* temp = (*node)->getRight();
         (*node)->setRight((*node)->getRight()->getLeft());
         temp->setLeft((*node));
         temp->setLeft((*node));
@@ -161,8 +159,8 @@ class AVL{
         rotateEnd(*node);
     }
 
-    void RotateRight(AVL_Node<T>** node) {
-        AVL_Node<T>* temp = (*node)->getLeft();
+    void RotateRight(AVL_Node<T, K>** node) {
+        AVL_Node<T, K>* temp = (*node)->getLeft();
         (*node)->setLeft((*node)->getLeft()->getRight());
         temp->setRight((*node));
         (*node) = temp;
@@ -173,7 +171,7 @@ class AVL{
      * destruction function of the AVL tree
      * @param node - target node pointer of the AVL tree
      */
-    void destroyAux(AVL_Node<T>* node) const {
+    void destroyAux(AVL_Node<T, K>* node) const {
         if(nullptr == node){
             return;
         }
@@ -182,7 +180,7 @@ class AVL{
         delete node;
     }
 
-    void destroyDynamicDataAux(AVL_Node<T>* node){
+    void destroyDynamicDataAux(AVL_Node<T, K>* node){
         if(node == nullptr){
             return;
         }
@@ -200,17 +198,17 @@ class AVL{
      *      @nullptr - in case there is no node with matching target key
      *      @node_pointer - pointer to target node with matching key
      */
-    AVL_Node<T>* findAux(AVL_Node<T>* node, const int key, T& data) const{
+    AVL_Node<T, K>* findAux(AVL_Node<T, K>* node, const int key, T& data) const{
         if (node->compFunc(data, key) == 0) {
             return node;
         }
         if (nullptr != node->getRight() && node->compFunc(data, key) < 0) {
-            AVL_Node<T> *result = this->findAux(node->getRight(), key, data);
+            AVL_Node<T, K> *result = this->findAux(node->getRight(), key, data);
             if (nullptr != result) {
                 return result;
             }
         } else if (nullptr != node->getLeft() && node->compFunc(data, key) > 0) {
-            AVL_Node<T> *result = this->findAux(node->getLeft(), key, data);
+            AVL_Node<T, K> *result = this->findAux(node->getLeft(), key, data);
             if (nullptr != result) {
                 return result;
             }
@@ -224,14 +222,14 @@ class AVL{
      * @param node - target node pointer of the tree to which balance factor is
      *               checked.
      */
-    void balanceCheckAndUpdate(AVL_Node<T>*& node){
+    void balanceCheckAndUpdate(AVL_Node<T, K>*& node){
         node->updateHeight();
         node->updateSizeOfSubtree();
         node->updateSumOfSubtree();
         int balance = node->getBalance();
         if(balance < MINIMAL_NEGATIVE_BALANCE) {
             if(node->getRight()->getBalance() == MAXIMAL_POSITIVE_BALANCE) {
-                AVL_Node<T> *temp = node->getRight();
+                AVL_Node<T, K> *temp = node->getRight();
                 this->RotateRight(&temp);
                 node->setRight(temp);
                 this->RotateLeft(&node);
@@ -240,7 +238,7 @@ class AVL{
             }
         } else if(balance > MAXIMAL_POSITIVE_BALANCE){
             if(node->getLeft()->getBalance() == MINIMAL_NEGATIVE_BALANCE) {
-                AVL_Node<T> *temp = node->getLeft();
+                AVL_Node<T, K> *temp = node->getLeft();
                 this->RotateLeft(&temp);
                 node->setLeft(temp);
                 this->RotateRight(&node);
@@ -250,16 +248,16 @@ class AVL{
         }
     }
 
-    static void changeNodes(AVL_Node<T>*& node, AVL_Node<T>*& current){
-        AVL_Node<T>* tempRight = current->getRight();
-        AVL_Node<T>* tempLeft = current->getLeft();
+    static void changeNodes(AVL_Node<T, K>*& node, AVL_Node<T, K>*& current){
+        AVL_Node<T, K>* tempRight = current->getRight();
+        AVL_Node<T, K>* tempLeft = current->getLeft();
         current->setRight(node->getRight());
         current->setLeft(node->getLeft());
         node->setRight(tempLeft);
         node->setLeft(tempRight);
     }
 
-    void rotateEnd(AVL_Node<T>* node){
+    void rotateEnd(AVL_Node<T, K>* node){
         if(nullptr != node->getRight()){
             node->getRight()->updateHeight();
             node->getRight()->updateSumOfSubtree();
@@ -284,26 +282,26 @@ class AVL{
      * @param data - target data to be inserted ti the AVL tree
      * @param key - target key to be inserted
      */
-    void insertAux(AVL_Node<T>** node_pointer, T data, const int& key){
-        AVL_Node<T> *node = *node_pointer;
+    void insertAux(AVL_Node<T, K>** node_pointer, T data, const int& key){
+        AVL_Node<T, K> *node = *node_pointer;
         if(node->compFunc(data, key) == 0) {
             return;
         } else if(node->compFunc(data, key) > 0){
             if(nullptr != node->getLeft()){
-                AVL_Node<T>* temp = node->getLeft();
+                AVL_Node<T, K>* temp = node->getLeft();
                 insertAux(&temp, data, key);
                 node->setLeft(temp);
             }
             else {
-                node->setLeft(new AVL_Node<T>(data,key));
+                node->setLeft(new AVL_Node<T, K>(data,key));
             }
         } else {
             if(nullptr != node->getRight()){
-                AVL_Node<T> *temp = node->getRight();
+                AVL_Node<T, K> *temp = node->getRight();
                 insertAux(&temp,data,key);
                 node->setRight(temp);
             } else {
-                node->setRight(new AVL_Node<T>(data,key));
+                node->setRight(new AVL_Node<T, K>(data,key));
             }
         }
         balanceCheckAndUpdate(node);
@@ -316,15 +314,15 @@ class AVL{
      * @param node_to_delete - target node to be deleted
      * @param node - right son of target node to be deleted
      */
-    void removeAux2(AVL_Node<T>*& node_to_delete, AVL_Node<T>*& node){
+    void removeAux2(AVL_Node<T, K>*& node_to_delete, AVL_Node<T, K>*& node){
         if(nullptr == node->getLeft()) {
-            AVL_Node<T>* temp = node_to_delete;
+            AVL_Node<T, K>* temp = node_to_delete;
             node_to_delete = node;
             node = temp;
             changeNodes(node, node_to_delete);
             removeNodeAux1(node);
         } else {
-            AVL_Node<T>* temp = node->getLeft();
+            AVL_Node<T, K>* temp = node->getLeft();
             removeAux2(node_to_delete,temp);
             node->setLeft(temp);
         }
@@ -338,20 +336,20 @@ class AVL{
      * tree: has 2 sons, is a leaf or has one of right/left sons.
      * @param node - target node to be deleted from the tree
      */
-    void removeNodeAux1(AVL_Node<T>*& node){
+    void removeNodeAux1(AVL_Node<T, K>*& node){
         if(node->isLeaf()){
             delete(node);
             node = nullptr;
         } else if(nullptr != node->getRight() && nullptr != node->getLeft()) {
-            AVL_Node<T>* temp = node->getRight();
+            AVL_Node<T, K>* temp = node->getRight();
             removeAux2(node,temp);
             node->setRight(temp);
         } else if(nullptr == node->getLeft()) {
-            AVL_Node<T> *temp = node;
+            AVL_Node<T, K> *temp = node;
             node = node->getRight();
             delete(temp);
         } else if(nullptr == node->getRight()){
-            AVL_Node<T> *temp = node;
+            AVL_Node<T, K> *temp = node;
             node = node->getLeft();
             delete(temp);
         }
@@ -363,7 +361,7 @@ class AVL{
      * @param key - target key to be deleted from the tree
      * @param was_deleted - flag that indicates if a node was deleted or not.
      */
-    void deleteAux(AVL_Node<T>*& node, int key, T& data1, bool* was_deleted){
+    void deleteAux(AVL_Node<T, K>*& node, int key, T& data1, bool* was_deleted){
         if(nullptr == node){
             return;
         }
@@ -371,11 +369,11 @@ class AVL{
             removeNodeAux1(node);
             *was_deleted = true;
         } else if(node->compFunc(data1, key) > 0) {
-            AVL_Node<T>* temp_node = node->getLeft();
+            AVL_Node<T, K>* temp_node = node->getLeft();
             deleteAux(temp_node,key, data1, was_deleted);
             node->setLeft(temp_node);
         } else if(node->compFunc(data1, key) < 0){
-            AVL_Node<T>* temp_node = node->getRight();
+            AVL_Node<T, K>* temp_node = node->getRight();
             deleteAux(temp_node,key, data1, was_deleted);
             node->setRight(temp_node);
         }
@@ -392,24 +390,24 @@ class AVL{
      * @param size2 - size of array b
      * @param c - target array to contain the merged sorted array of a and b
      */
-    static void mergeSortedArrays(AVL_Node<T>** array1, int size1, AVL_Node<T>** array2, int size2, AVL_Node<T>** merged_array) {
+    static void mergeSortedArrays(AVL_Node<T, K>** array1, int size1, AVL_Node<T, K>** array2, int size2, AVL_Node<T, K>** merged_array) {
         int i = 0, j = 0, k = 0;
         while(i < size1 && j < size2){
             if (array1[i]->compFunc(array2[j]->getData(), array2[j]->getKey()) < 0){
-                merged_array[k] = new AVL_Node<T>(array1[i]->getData(), array1[i]->getKey());
+                merged_array[k] = new AVL_Node<T, K>(array1[i]->getData(), array1[i]->getKey());
                 i++;
             } else {
-                merged_array[k] = new AVL_Node<T>(array2[j]->getData(), array2[j]->getKey());
+                merged_array[k] = new AVL_Node<T, K>(array2[j]->getData(), array2[j]->getKey());
                 j++;
             }
             k++;
         }
         for (; i < size1; ++i) {
-            merged_array[k] = new AVL_Node<T>(array1[i]->getData(), array1[i]->getKey());
+            merged_array[k] = new AVL_Node<T, K>(array1[i]->getData(), array1[i]->getKey());
             k++;
         }
         for (; j < size2; ++j) {
-            merged_array[k] = new AVL_Node<T>(array2[j]->getData(), array2[j]->getKey());
+            merged_array[k] = new AVL_Node<T, K>(array2[j]->getData(), array2[j]->getKey());
             k++;
         }
     }
@@ -424,12 +422,12 @@ class AVL{
      *      @nullptr - if starting index is bigger than the end index
      *      @merged_tree - else
      */
-    static AVL_Node<T>* mergeTrees_Aux(AVL_Node<T>** merged, int start, int finish) {
+    static AVL_Node<T, K>* mergeTrees_Aux(AVL_Node<T, K>** merged, int start, int finish) {
         if(start > finish){
             return nullptr;
         }
         int mid = (start + finish) / 2;
-        AVL_Node<T>* avlNode = new AVL_Node<T>(merged[mid]->getData(), merged[mid]->getKey());
+        AVL_Node<T, K>* avlNode = new AVL_Node<T, K>(merged[mid]->getData(), merged[mid]->getKey());
         avlNode->setLeft(mergeTrees_Aux(merged, start, mid - 1));
         avlNode->setRight(mergeTrees_Aux(merged, mid + 1, finish));
         return avlNode;
@@ -443,7 +441,7 @@ class AVL{
      * the size of the subtree of each node
      * @param r - target pointer of root of the tree to be updated
      */
-    void postorderUpdateProperties(AVL_Node<T>* current_node){
+    void postorderUpdateProperties(AVL_Node<T, K>* current_node){
         if(nullptr == current_node){
             return;
         }
@@ -461,18 +459,18 @@ public:
         destroyAux(this->root);
     }
 
-    AVL_Node<T>* getroot() const{
+    AVL_Node<T, K>* getroot() const{
         return this->root;
     }
 
-    AVL_Node<T>* find(const int key, T data1) const{
+    AVL_Node<T, K>* find(const int key, T data1) const{
         return nullptr == this->root ? nullptr : findAux(this->root, key, data1);
     }
 
-    AVL_Node<T>* insert(const T& data, const int key){
+    AVL_Node<T, K>* insert(const T& data, const int key){
         T data1 = const_cast<const T&>(data);
         if(nullptr == this->root){
-            this->root = new AVL_Node<T>(data1, key);
+            this->root = new AVL_Node<T, K>(data1, key);
             ++(this->size);
             return this->root;
         } else if(!(this->isExist(key, data1))){
@@ -483,9 +481,9 @@ public:
         return nullptr;
     }
 
-    AVL_Node<T>* insert(T& data, const int key){
+    AVL_Node<T, K>* insert(T& data, const int key){
         if(nullptr == this->root){
-            this->root = new AVL_Node<T>(data, key);
+            this->root = new AVL_Node<T, K>(data, key);
             ++(this->size);
             return this->root;
         } else if(!(this->isExist(key, data))){
@@ -521,11 +519,11 @@ public:
         return this->size;
     }
 
-    AVL_Node<T>* getLeft() {
+    AVL_Node<T, K>* getLeft() {
         return this->root->getLeft();
     }
 
-    AVL_Node<T>* getRight() {
+    AVL_Node<T, K>* getRight() {
         return this->root->getRight();
     }
 
@@ -536,7 +534,7 @@ public:
      * @param index - index iterator of target array
      * @param r - root of target AVL tree
      */
-    void oppositeInorder(T* array, int* index, AVL_Node<T>* r){
+    void oppositeInorder(T* array, int* index, AVL_Node<T, K>* r){
         if(nullptr == r){
             return;
         }
@@ -551,7 +549,7 @@ public:
      * @param index - index iterator of target array
      * @param r - root of target AVL tree
      */
-    void inorderData(T* array, int* index, AVL_Node<T>* r){
+    void inorderData(T* array, int* index, AVL_Node<T, K>* r){
         if(nullptr == r){
             return;
         }
@@ -566,7 +564,7 @@ public:
     * @param index - index iterator of target array
     * @param r - root of target AVL tree
     */
-    void inorderKey(int* array, int* index, AVL_Node<T>* r){
+    void inorderKey(int* array, int* index, AVL_Node<T, K>* r){
         if(nullptr == r){
             return;
         }
@@ -581,12 +579,12 @@ public:
    * @param index - index iterator of target array
    * @param r - root of target AVL tree
    */
-    void inorder(AVL_Node<T>** array, int* index, AVL_Node<T>* r){
+    void inorder(AVL_Node<T, K>** array, int* index, AVL_Node<T, K>* r){
         if(nullptr == r){
             return;
         }
         inorder(array, index, r->getLeft());
-        array[(*index)++] = new AVL_Node<T> (r->getData(), r->getKey());
+        array[(*index)++] = new AVL_Node<T, K> (r->getData(), r->getKey());
         inorder(array, index, r->getRight());
     }
 
@@ -596,7 +594,7 @@ public:
      * @return
      *      sum of of the @k biggest keys in the ranked tree
      */
-    int getSumOfTraffic(AVL_Node<T>* node, int k) {
+    int getSumOfTraffic(AVL_Node<T, K>* node, int k) {
         if(k <= 0 || !node){
             return 0;
         }
@@ -617,7 +615,6 @@ public:
         }
         return node->getKey() + getSumOfTraffic(node->getLeft(), k - 1);
     }
-
 };
 
 #endif //HW1_234218_AVL_H
