@@ -1,2 +1,6 @@
 .idea*
-cmake-build-debug*
+cmake-build-debug/CMakeFiles*
+cmake-build-debug/cmake_install.cmake
+cmake-build-debug/CMakeCache.txt
+cmake-build-debug/hw2_234218_w20_21.*
+cmake-build-debug/Makefile
