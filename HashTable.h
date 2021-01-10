@@ -38,7 +38,7 @@ class HashTable
 	bool _isMainHash;//this parameter determine if to delete _value (server) in the d'tor 
 
 public:
-	HashTable(bool isMainHash)
+	explicit HashTable(bool isMainHash)
 	{
 		_isMainHash = isMainHash;
 		_hashTable = new HashTableElement<T> * [TABLE_INITIAL_SIZE];

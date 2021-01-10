@@ -36,7 +36,7 @@ public:
     }
 
     void setTime(int _time) {
-        Class::time = _time;
+        Class::time += _time;
     }
 
     bool operator==(const Class &rhs) const {
@@ -45,6 +45,28 @@ public:
 
     bool operator!=(const Class &rhs) const {
         return !(rhs == *this);
+    }
+
+    bool operator>(const Class &rhs) const{
+        if (time == rhs.time){
+            if (courseID == rhs.courseID) {
+                return classID < rhs.classID;
+            }
+            return courseID < rhs.courseID;
+        }
+        return time > rhs.time;
+    }
+
+    bool operator<(const Class &rhs) const {
+        return !(*this > rhs) && !(*this == rhs);
+    }
+
+    bool operator<=(const Class &rhs) const {
+        return *this == rhs || *this < rhs;
+    }
+
+    bool operator>=(const Class &rhs) const {
+        return *this == rhs || *this > rhs;
     }
 };
 #endif //HW2_234218_W20_21_CLASS_H

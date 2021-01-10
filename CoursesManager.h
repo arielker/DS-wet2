@@ -4,11 +4,18 @@
 #include "AVL.h"
 #include "class.h"
 #include "library2.h"
+#include "Course.h"
+#include "HashTable.h"
 
 class CoursesManager {
+    ///current amount of classes in the system.
     int numOfClasses;
-    AVL<Class> classes_tree; //TODO: Class or Class* ?!
-    ///hash table of courses where for each course there is a hash table of  classes
+
+    ///Ranked AVL tree of all classes in the system.
+    AVL<int, Class*> *classes_tree;
+
+    ///hash table of courses where for each course there is a hash table of  classes.
+    HashTable<Course> *courses;
 
 public:
     CoursesManager();
