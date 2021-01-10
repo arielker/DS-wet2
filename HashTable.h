@@ -2,7 +2,7 @@
 #include <ostream>
 
 // Hash table size 
-#define TABLE_INITIAL_SIZE 8
+#define TABLE_INITIAL_SIZE 17
 
 // Used in second hash function. 
 #define PRIME 7 
