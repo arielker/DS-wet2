@@ -12,9 +12,7 @@ template<typename T, typename K>
 class AVL_Node {
     T data; ///is int actually
     K key; ///is Class
-//    int course_id;
     int height;
-//    int sum_of_subtree;
     int size_of_subtree;
     AVL_Node* left;
     AVL_Node* right;
@@ -42,10 +40,6 @@ public:
     int getSizeOfSubtree() const {
         return this->size_of_subtree;
     }
-
-//    int getSumOfSubtree() const {
-//        return this->sum_of_subtree;
-//    }
 
     void setData(T& new_data){
         this->data = new_data;
@@ -83,7 +77,7 @@ public:
      *      @negative_integer - else
      */
     int compFunc(T& data1, K key1){
-        return this->key == key1 ? 0 : this->key > key1 ? 1 : -1;
+        return *(this->key) == *key1 ? 0 : *(this->key) > *key1 ? 1 : -1;
     }
 
     void updateHeight(){
@@ -99,18 +93,6 @@ public:
             this->height= this->right->height + HEIGHT_STEP_UNIT;
         }
     }
-
-//    void updateSumOfSubtree(){
-//        if(this->isLeaf()){
-//            this->sum_of_subtree = key;
-//        } else if (nullptr == this->left){
-//            this ->sum_of_subtree = key + this->right->sum_of_subtree;
-//        } else if (nullptr == this->right){
-//            this->sum_of_subtree = key + this->left->sum_of_subtree;
-//        } else {
-//            this->sum_of_subtree = key + this->left->sum_of_subtree + this->right->sum_of_subtree;
-//        }
-//    }
 
     void updateSizeOfSubtree() {
         if(this->isLeaf()){
@@ -224,7 +206,6 @@ class AVL{
     void balanceCheckAndUpdate(AVL_Node<T, K>*& node){
         node->updateHeight();
         node->updateSizeOfSubtree();
-//        node->updateSumOfSubtree();
         int balance = node->getBalance();
         if(balance < MINIMAL_NEGATIVE_BALANCE) {
             if(node->getRight()->getBalance() == MAXIMAL_POSITIVE_BALANCE) {
@@ -259,16 +240,13 @@ class AVL{
     void rotateEnd(AVL_Node<T, K>* node){
         if(nullptr != node->getRight()){
             node->getRight()->updateHeight();
-//            node->getRight()->updateSumOfSubtree();
             node->getRight()->updateSizeOfSubtree();
         }
         if(nullptr != node->getLeft()){
             node->getLeft()->updateHeight();
             node->getLeft()->updateSizeOfSubtree();
-//            node->getLeft()->updateSumOfSubtree();
         }
         node->updateHeight();
-//        node->updateSumOfSubtree();
         node->updateSizeOfSubtree();
     }
 
@@ -379,25 +357,6 @@ class AVL{
         if(nullptr != node) {
             balanceCheckAndUpdate(node);
         }
-    }
-
-    /**
-     * updates all properties of the nodes of the AVL tree including by standard
-     * postorder : left - right - root. properties included:
-     * the height of each node
-     * the sum of keys of the subtree of each node
-     * the size of the subtree of each node
-     * @param r - target pointer of root of the tree to be updated
-     */
-    void postorderUpdateProperties(AVL_Node<T, K>* current_node){
-        if(nullptr == current_node){
-            return;
-        }
-        postorderUpdateProperties(current_node->getLeft());
-        postorderUpdateProperties(current_node->getRight());
-        current_node->updateHeight();
-        current_node->updateSizeOfSubtree();
-//        current_node->updateSumOfSubtree();
     }
 
     K GetIthWatchedClass_aux(int i, AVL_Node<T, K>* node){

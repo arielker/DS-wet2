@@ -8,10 +8,8 @@
 #include "HashTable.h"
 
 class CoursesManager {
-    ///current amount of classes in the system.
-    int numOfClasses;
-
     ///Ranked AVL tree of all classes in the system.
+    ///NOTE: current amount of viewed classes in the system is the tree's size.
     AVL<int, Class*> *classes_tree;
 
     ///hash table of courses where for each course there is a hash table of  classes.

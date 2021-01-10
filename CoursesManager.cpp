@@ -1,6 +1,8 @@
 #include "CoursesManager.h"
+#include <iostream>
+using namespace std;
 
-CoursesManager::CoursesManager() : numOfClasses(0) {
+CoursesManager::CoursesManager() {
     this->classes_tree = new AVL<int, Class*>();
     this->courses = new HashTable<Course>(true);
 }
@@ -39,7 +41,6 @@ StatusType CoursesManager::AddClass(int courseID, int *classID) {
         return FAILURE;
     }
     course->addClass(classID);
-    this->numOfClasses++;
     return SUCCESS;
 }
 
