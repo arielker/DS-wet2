@@ -99,7 +99,7 @@ static bool isInit = false;
 //    return 0;
 //}
 
-///for in_1-6.txt files:
+///for in_1-6.txt files: and staff's in2.txt
 //int main(int argc, const char**argv) {
 //    char buffer[MAX_STRING_INPUT_SIZE];
 //    FILE* stream = fopen("in_6.txt", "r");
