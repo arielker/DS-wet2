@@ -41,18 +41,6 @@ public:
         return this->size_of_subtree;
     }
 
-    void setData(T& new_data){
-        this->data = new_data;
-    }
-
-    T& getData(){
-        return this->data;
-    }
-
-    T* getPointerToData(){
-        return  &(this->data);
-    }
-
     void setRight(AVL_Node* node){
         this->right = node;
     }
@@ -106,14 +94,6 @@ public:
         }
     }
 
-    int getHeight() const{
-        return this->height;
-    }
-
-    void setHeight(int new_height){
-        this->height = new_height;
-    }
-
     int getBalance() const{
         if(this->isLeaf()) {
             return 0;
@@ -159,15 +139,6 @@ class AVL{
         destroyAux(node->getLeft());
         destroyAux(node->getRight());
         delete node;
-    }
-
-    void destroyDynamicDataAux(AVL_Node<T, K>* node){
-        if(node == nullptr){
-            return;
-        }
-        destroyDynamicDataAux(node->getLeft());
-        destroyDynamicDataAux(node->getRight());
-        delete (node->getData());
     }
 
     /**
@@ -359,7 +330,7 @@ class AVL{
         }
     }
 
-    K GetIthWatchedClass_aux(int i, AVL_Node<T, K>* node){
+    K GetIthWatchedClass_aux(int i, AVL_Node<T, K>* node) {
         int rightSonSubtreeSize = 0;
         if(nullptr != node->getRight()){
             rightSonSubtreeSize = node->getRight()->getSizeOfSubtree();
@@ -443,14 +414,6 @@ public:
 
     int getSize() const{
         return this->size;
-    }
-
-    AVL_Node<T, K>* getLeft() {
-        return this->root->getLeft();
-    }
-
-    AVL_Node<T, K>* getRight() {
-        return this->root->getRight();
     }
 
     K GetIthWatchedClass(int i){

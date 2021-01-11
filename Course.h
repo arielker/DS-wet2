@@ -22,28 +22,12 @@ public:
         delete course_classes;
     }
 
-    int getCourseId() const {
-        return course_id;
-    }
-
-    void setCourseId(int courseId) {
-        course_id = courseId;
-    }
-
     HashTable<Class> *getCourseClasses() const {
         return course_classes;
     }
 
-    void setCourseClasses(HashTable<Class> *courseClasses) {
-        course_classes = courseClasses;
-    }
-
     int getNumOfClasses() const {
         return num_of_classes;
-    }
-
-    void setNumOfClasses(int numOfClasses) {
-        num_of_classes = numOfClasses;
     }
 
     int getTimeViewedOfClass(int classID){

@@ -19,16 +19,8 @@ public:
         return classID;
     }
 
-    void setClassId(int classId) {
-        classID = classId;
-    }
-
     int getCourseId() const {
         return courseID;
-    }
-
-    void setCourseId(int courseId) {
-        courseID = courseId;
     }
 
     int getTime() const {
@@ -47,7 +39,8 @@ public:
         return !(rhs == *this);
     }
 
-    bool operator>(const Class &rhs) const{
+    ///according to the exercise:
+    bool operator>(const Class &rhs) const {
         if (time == rhs.time){
             if (courseID == rhs.courseID) {
                 return classID < rhs.classID;

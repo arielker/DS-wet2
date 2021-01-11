@@ -23,46 +23,45 @@ public:
         return value;
     }
 
-    void setValue(V value) {
-        HashNode::value = value;
+    void setValue(V v) {
+        HashNode::value = v;
     }
 
     HashNode *getNext() const {
         return next;
     }
 
-    void setNext(HashNode *next) {
-        HashNode::next = next;
+    void setNext(HashNode *node) {
+        HashNode::next = node;
     }
 
 private:
-    // key-value pair
+    /// key-value pair
     K key;
     V value;
-    // next bucket with the same key
+    /// next bucket with the same key
     HashNode *next;
 };
 
-// Default hash function class
+/// Default hash function class
 template <typename K>
 struct KeyHash {
-    unsigned long operator()(const K& key) const
-    {
+    unsigned long operator()(const K& key) const {
         return reinterpret_cast<unsigned long>(key) % TABLE_SIZE;
     }
 };
 
-// Hash map class template
+/// Hash map class template
 template <typename K, typename V, typename F = KeyHash<K>>
 class HashMap {
 public:
     HashMap() {
-        // construct zero initialized hash table of size
+        /// construct zero initialized hash table of size
         table = new HashNode<K, V> *[TABLE_SIZE]();
     }
 
     ~HashMap() {
-        // destroy all buckets one by one
+        /// destroy all buckets one by one
         for (int i = 0; i < TABLE_SIZE; ++i) {
             HashNode<K, V> *entry = table[i];
             while (entry != nullptr) {
@@ -72,7 +71,7 @@ public:
             }
             table[i] = nullptr;
         }
-        // destroy the hash table
+        /// destroy the hash table
         delete [] table;
     }
 
@@ -103,13 +102,13 @@ public:
         if (entry == nullptr) {
             entry = new HashNode<K, V>(key, value);
             if (prev == nullptr) {
-                // insert as first bucket
+                /// insert as first bucket
                 table[hashValue] = entry;
             } else {
                 prev->setNext(entry);
             }
         } else {
-            // just update the value
+            /// just update the value
             entry->setValue(value);
         }
     }
@@ -125,12 +124,12 @@ public:
         }
 
         if (entry == nullptr) {
-            // key not found
+            /// key not found
             return;
         }
         else {
             if (prev == nullptr) {
-                // remove first bucket of the list
+                /// remove first bucket of the list
                 table[hashValue] = entry->getNext();
             } else {
                 prev->setNext(entry->getNext());
@@ -140,7 +139,7 @@ public:
     }
 
 private:
-    // hash table
+    /// hash table
     HashNode<K, V> **table;
     F hashFunc;
 };
