@@ -356,10 +356,6 @@ public:
         destroyAux(this->root);
     }
 
-    AVL_Node<T, K>* getroot() const{
-        return this->root;
-    }
-
     AVL_Node<T, K>* find(K key, T data1) const{
         return nullptr == this->root ? nullptr : findAux(this->root, key, data1);
     }

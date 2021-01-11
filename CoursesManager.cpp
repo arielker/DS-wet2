@@ -1,6 +1,4 @@
 #include "CoursesManager.h"
-#include <iostream>
-using namespace std;
 
 CoursesManager::CoursesManager() {
     this->classes_tree = new AVL<int, Class*>();
