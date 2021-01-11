@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <io.h>
+#include <fcntl.h>
 #include "library2.h"
 
 #ifdef __cplusplus
@@ -83,6 +85,7 @@ static bool isInit = false;
 /* main                                                                    */
 /***************************************************************************/
 
+///staff's primitive main:
 //int main(int argc, const char**argv) {
 //
 //    char buffer[MAX_STRING_INPUT_SIZE];
@@ -96,10 +99,26 @@ static bool isInit = false;
 //    return 0;
 //}
 
-int main(int argc, const char**argv) {
+///for in_1-6.txt files:
+//int main(int argc, const char**argv) {
+//    char buffer[MAX_STRING_INPUT_SIZE];
+//    FILE* stream = fopen("in_6.txt", "r");
+//    // Reading commands
+//    while (fgets(buffer, MAX_STRING_INPUT_SIZE, stream) != NULL) {
+//        fflush(stdout);
+//        if (parser(buffer) == error)
+//            break;
+//    };
+//    fclose(stream);
+//    return 0;
+//}
 
+///for stress test:
+int main(int argc, const char**argv) {
+    close(1);
+    open("test stress output.txt", O_WRONLY | O_CREAT, 0666);
     char buffer[MAX_STRING_INPUT_SIZE];
-    FILE* stream = fopen("in2.txt", "r");
+    FILE* stream = fopen("testStress1.in", "r");
     // Reading commands
     while (fgets(buffer, MAX_STRING_INPUT_SIZE, stream) != NULL) {
         fflush(stdout);
