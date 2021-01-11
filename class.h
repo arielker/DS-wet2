@@ -12,6 +12,9 @@ public:
     Class(int classId, int courseId, int time = 0) :
     classID(classId), courseID(courseId), time(time) {}
 
+    ///copy c'tor
+    Class(const Class& aClass) = default;
+
     ///d'tor
     virtual ~Class() = default;
 

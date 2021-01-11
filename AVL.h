@@ -64,8 +64,8 @@ public:
      *      node with matching target data and key
      *      @negative_integer - else
      */
-    int compFunc(T& data1, K key1){
-        return *(this->key) == *key1 ? 0 : *(this->key) > *key1 ? 1 : -1;
+    int compFunc(T& data1, const K& key1){
+        return this->key == key1 ? 0 : this->key > key1 ? 1 : -1;
     }
 
     void updateHeight(){

@@ -1,7 +1,7 @@
 #include "CoursesManager.h"
 
 CoursesManager::CoursesManager() {
-    this->classes_tree = new AVL<int, Class*>();
+    this->classes_tree = new AVL<int, Class>();
     this->courses = new HashTable<Course>(true);
 }
 
@@ -25,9 +25,8 @@ StatusType CoursesManager::RemoveCourse(int courseID) {
         return FAILURE;
     }
     for (int i = 0; i < course->getNumOfClasses(); ++i) {
-        auto aClass = new Class(i, courseID, course->getTimeViewedOfClass(i));
+        auto aClass = Class(i, courseID, course->getTimeViewedOfClass(i));
         this->classes_tree->deleteNode(aClass, 0);
-        delete aClass;
     }
     this->courses->deleteFromHash(courseID);
     return SUCCESS;
@@ -51,9 +50,9 @@ StatusType CoursesManager::WatchClass(int courseID, int classID, int time) {
     if(course->getNumOfClasses() < classID + 1 || -1 == old_time){
         return INVALID_INPUT;
     }
-    auto aClass = new Class(classID, courseID, old_time);
+    auto aClass = Class(classID, courseID, old_time);
     this->classes_tree->deleteNode(aClass, 0);
-    aClass->setTime(time);
+    aClass.setTime(time);
     this->classes_tree->insert(0, aClass);
     course->getCourseClasses()->find(classID)->setTime(time);
     return SUCCESS;
@@ -76,8 +75,8 @@ StatusType CoursesManager::GetIthWatchedClass(int i, int *courseID, int *classID
     if(this->classes_tree->getSize() < i){
         return FAILURE;
     }
-    auto node = this->classes_tree->GetIthWatchedClass(i);
-    *courseID = node->getCourseId();
-    *classID = node->getClassId();
+    Class node = this->classes_tree->GetIthWatchedClass(i);
+    *courseID = node.getCourseId();
+    *classID = node.getClassId();
     return SUCCESS;
 }
