@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HW2_234218_W20_21_HASHTABLE_H
+#define HW2_234218_W20_21_HASHTABLE_H
 #include <ostream>
 
 // Hash table size 
@@ -288,3 +289,4 @@ public:
 	//}
 
 };
+#endif //HW2_234218_W20_21_HASHTABLE_H
