@@ -116,7 +116,7 @@ static bool isInit = false;
 ///for stress test:
 int main(int argc, const char**argv) {
     close(1);
-    open("test stress output.txt", O_WRONLY | O_CREAT, 0666);
+    open("test stress output.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
     char buffer[MAX_STRING_INPUT_SIZE];
     FILE* stream = fopen("testStress1.in", "r");
     // Reading commands

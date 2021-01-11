@@ -50,7 +50,7 @@ NUMBER_OF_COURSES = 10000 #Don't go too wild, espcially if you're testing on the
 DIRECTORY = ""
 
 # Set names of test in and out files. Recommended format: "testStress1.in" and "testStress1.out"
-TEST_IN_NAME = "testStress1.in"
+TEST_IN_NAME = "cmake-build-debug/testStress1.in"
 TEST_OUT_NAME = "testStress1.out"
 
 """ ========================================================
