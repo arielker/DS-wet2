@@ -102,7 +102,7 @@ static bool isInit = false;
 ///for in_1-6.txt files: and staff's in2.txt
 //int main(int argc, const char**argv) {
 //    char buffer[MAX_STRING_INPUT_SIZE];
-//    FILE* stream = fopen("in_6.txt", "r");
+//    FILE* stream = fopen("in10.txt", "r");
 //    // Reading commands
 //    while (fgets(buffer, MAX_STRING_INPUT_SIZE, stream) != NULL) {
 //        fflush(stdout);
