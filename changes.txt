@@ -1,0 +1,2 @@
+modified 1 line in hash table file:
+changed HT init size to a different and better size.
