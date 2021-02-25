@@ -2,7 +2,7 @@
 #define HW2_234218_W20_21_HASHTABLE_H
 
 /// Hash table initial size
-const int TABLE_INITIAL_SIZE = 17;
+const int TABLE_INITIAL_SIZE = 1303;
 
 /// Used in second hash function.
 const int PRIME = 7;
